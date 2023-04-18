@@ -1,0 +1,8 @@
+.homepage-container{
+    background-color: rgba(128,128,128, 0.3);
+    border:  2px solid gray;
+    padding: 12px;
+    border-radius: 10px;
+    height: max-content;
+    width: max-content;
+}

@@ -1,0 +1,64 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  background-image: url(/src/images/human-resource-.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.login-button{
+  border:  2px solid gray;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: rgb(27, 49, 116);
+  color: white;
+  font-weight: bold;
+  font-size: larger;
+}
+
+.login-container{
+  border:  2px solid gray;
+  padding: 12px;
+  border-radius: 10px;
+  height: max-content;
+  width: 20%;
+  font-style: italic;
+  color: white;
+  margin-left: 0%;
+  margin-right: 50%;
+  margin-bottom: 6%;
+  background-color: rgba(128, 128, 128, 0.5);
+}

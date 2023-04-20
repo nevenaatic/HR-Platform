@@ -9,8 +9,10 @@ public interface CandidateService {
     Candidate save(Candidate candidate);
     void delete(long id);
     Candidate findById(long id);
-    boolean existByEmail(String email);
     List<Candidate> findAll();
     List<Candidate> findBySkillName(String skillName);
     List<Candidate> findBySkillsName(List<String> skills);
+    List<Candidate> findByName(String name);
+    Candidate findByEmail(String email);
+
 }

@@ -26,7 +26,11 @@ public class Candidate {
     private String contactNumber;
     @Column(nullable = false)
     private String email;
-    @OneToMany(mappedBy = "candidate", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "candidate_skill",
+            joinColumns = @JoinColumn(name = "candidate_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private Set<Skill> skillList = new HashSet<Skill>();
 }
 

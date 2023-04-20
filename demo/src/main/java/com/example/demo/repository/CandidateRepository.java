@@ -9,12 +9,14 @@ import java.util.List;
 
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
-//    @Query("SELECT c FROM Candidate c JOIN c.skills s WHERE s.name IN ?1")
-//    List<Candidate> findBySkillsName(List<String> skillNames);
 
-    @Query("SELECT c FROM Candidate c JOIN c.skillList s WHERE s.name = ?1")
+    @Query("select c from Candidate c join c.skillList s WHERE s.name IN ?1")
+    List<Candidate> findBySkillsName(List<String> skillNames);
+    @Query("select c from Candidate c join c.skillList s where s.name = ?1")
     List<Candidate> findBySkillName(String skillName);
-
+    @Query("select c from Candidate c where lower(c.fullName) like lower(concat('%', ?1, '%'))")
+    List<Candidate> findByName(String name);
     Candidate findByEmail(String email);
+    Candidate findById(long id);
 
 }

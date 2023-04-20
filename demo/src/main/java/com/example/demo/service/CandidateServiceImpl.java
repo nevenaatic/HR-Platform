@@ -1,9 +1,7 @@
 package com.example.demo.service;
-
-import com.example.demo.DAO.CandidateDao;
 import com.example.demo.model.Candidate;
+import com.example.demo.repository.CandidateRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
@@ -11,33 +9,31 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class CandidateServiceImpl implements CandidateService {
 
-    private final CandidateDao candidateDao;
-    @Autowired
-    public CandidateServiceImpl(CandidateDao candidateDao) {
-        this.candidateDao = candidateDao;
-    }
+    private final CandidateRepository candidateRepository;
+
     @Override
     public Candidate save(Candidate candidate) {
-        if(candidateDao.existByEmail(candidate.getEmail())){
+        if(findByEmail(candidate.getEmail())!=null){
             throw new EntityExistsException("Candidate with this email already exist");
         }
-        return candidateDao.addCandidate(candidate);
+        return candidateRepository.save(candidate);
     }
 
     @Override
     public void delete(long id) {
-        if(candidateDao.getCandidateById(id) == null){
+        if(candidateRepository.findById(id) == null){
             throw new EntityExistsException("Candidate doesn't exist!");
         }
-            candidateDao.deleteCandidate(id);
+        candidateRepository.deleteById(id);
 
     }
 
     @Override
     public Candidate findById(long id) {
-       Candidate candidate = candidateDao.getCandidateById(id);
+       Candidate candidate = candidateRepository.findById(id);
        if(candidate == null){
           throw new EntityNotFoundException("Candidate doesn't exist");
        }
@@ -45,22 +41,27 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public boolean existByEmail(String email) {
-        return candidateDao.existByEmail(email);
-    }
-
-    @Override
     public List<Candidate> findAll() {
-        return candidateDao.getAllCandidates();
+        return candidateRepository.findAll();
     }
 
     @Override
     public List<Candidate> findBySkillName(String skillName) {
-        return null;
+        return candidateRepository.findBySkillName(skillName);
     }
 
     @Override
     public List<Candidate> findBySkillsName(List<String> skills) {
-        return null;
+        return candidateRepository.findBySkillsName(skills);
+    }
+
+    @Override
+    public List<Candidate> findByName(String name) {
+        return candidateRepository.findByName(name);
+    }
+
+    @Override
+    public Candidate findByEmail(String email) {
+        return candidateRepository.findByEmail(email);
     }
 }

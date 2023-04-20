@@ -12,13 +12,13 @@ import javax.persistence.*;
 @Table
 public class Skill {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private long id;
     @Column(nullable = false)
     private String name;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="skill_id")
-    private Candidate candidate;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name="skill_id")
+//    private Candidate candidate;
 }
 

@@ -15,17 +15,81 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
+		<spring-boot-starter-data-jpa.version>2.7.4</spring-boot-starter-data-jpa.version>
+		<postgresql.version>42.5.0</postgresql.version>
+		<projectlombok.version>1.18.24</projectlombok.version>
+		<swagger-annotations>2.2.4</swagger-annotations>
+		<swagger.version>3.0.0</swagger.version>
+		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+		<spring-boot-starter-data-jpa.version>2.7.4</spring-boot-starter-data-jpa.version>
+		<spring-boot-starter-web.version>2.7.4</spring-boot-starter-web.version>
+		<springdoc-openapi-ui.version>1.2.11</springdoc-openapi-ui.version>
+		<commons.version>3.12.0</commons.version>
+		<spring.boot.starter-parent.version>2.4.0</spring.boot.starter-parent.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring-boot-starter-web.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>${spring-boot-starter-data-jpa.version}</version>
+		</dependency>
+		<!--database -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${projectlombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+<!--		added for swagger with spring fox-->
+<!--		https://stackoverflow.com/questions/46151540/added-springfox-swagger-ui-and-its-not-working-what-am-i-missing-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-data-rest</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-bean-validators</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-parent</artifactId>
+			<version>${spring.boot.starter-parent.version}</version>
+		</dependency>
+<!--		 https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations-->
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger-annotations}</version>
 		</dependency>
 	</dependencies>
 

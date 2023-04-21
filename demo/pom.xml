@@ -25,7 +25,7 @@
 		<spring-boot-starter-web.version>2.7.4</spring-boot-starter-web.version>
 		<springdoc-openapi-ui.version>1.2.11</springdoc-openapi-ui.version>
 		<commons.version>3.12.0</commons.version>
-		<spring.boot.starter-parent.version>2.4.0</spring.boot.starter-parent.version>
+<!--		<spring.boot.starter-parent.version>2.4.6</spring.boot.starter-parent.version>-->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -33,7 +33,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 			<version>${spring-boot-starter-web.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -80,11 +79,11 @@
 			<version>${swagger.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-parent</artifactId>
-			<version>${spring.boot.starter-parent.version}</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-parent</artifactId>-->
+<!--			<version>${spring.boot.starter-parent.version}</version>-->
+<!--		</dependency>-->
 <!--		 https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations-->
 		<dependency>
 			<groupId>io.swagger.core.v3</groupId>

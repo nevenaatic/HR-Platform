@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Table
 public class Candidate {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private long id;
     @Column(nullable = false)

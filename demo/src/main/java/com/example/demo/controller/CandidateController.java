@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Candidate;
 import com.example.demo.model.Skill;
 import com.example.demo.service.CandidateService;
+import com.example.demo.service.SkillService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 public class CandidateController {
 
     private final CandidateService candidateService;
+    private final SkillService skillService;
 
     @GetMapping
     public ResponseEntity<List<Candidate>> getAllCandidates() {
@@ -39,7 +41,7 @@ public class CandidateController {
     public ResponseEntity<Candidate> updateCandidate(@PathVariable long id, @RequestBody Candidate candidate) {
       if(candidateService.findById(id) == null)
           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-      return new ResponseEntity<>(candidateService.save(candidate), HttpStatus.OK);
+      return new ResponseEntity<>(candidateService.updateCandidate(candidate), HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteCandidate(@PathVariable long id) {
@@ -69,5 +71,20 @@ public class CandidateController {
         if(candidates.size() == 0)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(candidates, HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/skill")
+    public ResponseEntity<Candidate> addSkillToCandidate(@PathVariable long id, @RequestBody String skillName){
+        if(candidateService.findById(id)==null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       return new ResponseEntity<>(candidateService.addSkillToCandidate(id,skillService.findOrCreateSkill(skillName) ), HttpStatus.OK) ;
+    }
+    @PostMapping("/candidate/")
+    public ResponseEntity<List<Candidate>> searchCandidateByName(@RequestBody String name){
+        return new ResponseEntity<>(candidateService.findByName(name), HttpStatus.OK) ;
+    }
+    @PostMapping("/candidate/skills")
+    public ResponseEntity<List<Candidate>> searchCandidateBySkill(@RequestBody List<String> skillList){
+        return new ResponseEntity<>(candidateService.findBySkillsName(skillList), HttpStatus.OK) ;
     }
 }

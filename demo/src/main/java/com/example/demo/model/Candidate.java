@@ -26,8 +26,8 @@ public class Candidate {
     private String contactNumber;
     @Column(nullable = false)
     private String email;
-//
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "candidate_skill",
             joinColumns = @JoinColumn(name = "candidate_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id"))

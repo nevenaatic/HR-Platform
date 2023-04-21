@@ -1,7 +1,10 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -17,8 +20,8 @@ public class Skill {
     private long id;
     @Column(nullable = false)
     private String name;
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name="skill_id")
-//    private Candidate candidate;
+    @ManyToMany(mappedBy = "skillList", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
+    private Set<Candidate> candidates = new HashSet<>();
 }
 

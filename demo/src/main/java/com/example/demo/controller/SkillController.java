@@ -1,5 +1,4 @@
 package com.example.demo.controller;
-
 import com.example.demo.model.Skill;
 import com.example.demo.service.SkillService;
 import lombok.AllArgsConstructor;
@@ -50,12 +49,21 @@ public class SkillController {
         Skill createdSkill = skillService.updateSKill(skill);
         return new ResponseEntity<>(createdSkill, HttpStatus.OK);
     }
+    @DeleteMapping("/{id}/candidate/{candidateId}")
+    public ResponseEntity<HttpStatus> deleteSkillForCandidate(@PathVariable long id, @PathVariable long candidateId){
+
+        if(skillService.findById(id) == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       skillService.deleteSkillForCandidate(id, candidateId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteSkill(@PathVariable long id){
 
         if(skillService.findById(id) == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-       skillService.deleteById(id);
+        skillService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

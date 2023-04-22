@@ -1,8 +1,68 @@
 .homepage-container{
-    background-color: rgba(128,128,128, 0.3);
+    background-color: rgba(128,128,128, 0.7);
     border:  2px solid gray;
     padding: 12px;
     border-radius: 10px;
-    height: max-content;
-    width: max-content;
+    height:90%;
+    width: 90%;
+}
+
+.logout-button{
+    border:  2px solid gray;
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: rgb(27, 49, 116);
+    color: white;
+    font-weight: bold;
+    font-size: large;
+}
+
+.navbar-style{
+ text-align: right;
+margin-left: 92%;
+}
+
+.skill-label{
+    border:  2px solid gray;
+    padding: 2px;
+    border-radius: 10px;
+    background-color: gray;
+    color: white;
+    font-size: large;
+    margin-left: 3%;
+}
+
+.card-style{
+    margin-top: 2%;
+   padding-right: 1%;
+    margin-bottom: 2%;
+}
+.cards{
+    margin-left: 5%;
+}
+
+.welcome {
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+.search{
+    width: 70%;
+    margin-left: 10%;
+}
+.search-button{
+    border:  2px solid gray;
+    padding: 7px ;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: rgb(27, 49, 116);
+    color: white;
+    font-weight: bold;
+    font-size: large;
+}
+
+.search-dropdown{
+    width: 100%;
+    font-size: medium;
 }

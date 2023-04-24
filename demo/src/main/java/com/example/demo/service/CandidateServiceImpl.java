@@ -7,9 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -62,7 +60,13 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public List<Candidate> findBySkillsName(List<String> skills) {
-        return candidateRepository.findBySkillsNameAND(skills, skills.size());
+        List<String> skillLower = new ArrayList<>();
+        if(skills.size()!= 0){
+            for(String s : skills) {
+                skillLower.add(s.toLowerCase());
+            }
+        }
+        return candidateRepository.findBySkillsNameAND(skillLower, skillLower.size());
     }
 
     @Override

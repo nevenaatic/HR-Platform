@@ -7,7 +7,7 @@ import { Card, CardGroup } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
 import Select from 'react-select';
 import React, { useEffect, useState } from 'react';
-import { findByName, getAllCandidates } from "../api/CandidateApi";
+import { findByName, findBySkillsName, getAllCandidates } from "../api/CandidateApi";
 import { getAllSkills } from "../api/SkillApi";
 
 export const Homepage = () => {
@@ -19,44 +19,67 @@ export const Homepage = () => {
     const [searchMessage, setSearchMessage] = useState("");
     const [isSearchEmpty, setIsSearchEmpty] = useState(false);
 
-    function searchCandidatesByName(event){
+    function searchCandidatesByName(event) {
         event.preventDefault();
-        if(searchName===''){
+        if (searchName === '') {
             console.log(searchName)
             getAllCandidates().then((data) => {
                 setCandidates(data.data);
                 setIsSearchEmpty(false);
-            }).catch(() => {});
+            }).catch(() => { });
         } else {
-             findByName(searchName)
-            .then((data) => setCandidates(data.data), setIsSearchEmpty(false))
-            .catch((err) => {
-                setSearchMessage("No candidates with this search criteria. Please, try again.")
-                setCandidates([])
-                setIsSearchEmpty(true);
-                console.log(searchMessage)
-            })
+            findByName(searchName)
+                .then((data) => setCandidates(data.data), setIsSearchEmpty(false))
+                .catch((err) => {
+                    setSearchMessage("No candidates with this search criteria. Please, try again.")
+                    setCandidates([])
+                    setIsSearchEmpty(true);
+                    console.log(searchMessage)
+                })
         }
-       
-    }   
 
-    const handleSelectChange = (selectedOptions) => {
-        setSelectedOptions(selectedOptions);
-        const values = selectedOptions.map(option => option.value);
+    }
+
+    function handleSelectChange(selectedOptions) {
+
+
+        if (selectedOptions.length === 0) {
+            console.log("ALO BRE")
+            getAllCandidates().then((data) => {
+                setCandidates(data.data);
+                isSearchEmpty(false);
+            }).catch(() => { });
+        } else {
+            console.log(selectedOptions)
+            const values = selectedOptions.map(option => option.value);
+            console.log("IZABRANE VESTINE U HANDLE SELECTION")
+            console.log(values);
+            findBySkillsName(values)
+                .then(data => {
+                    setCandidates(data.data);
+                    console.log("VRACENI OK REZULTATI")
+                    setIsSearchEmpty(false)
+                }
+                ).catch(() => {
+                    console.log("VRACENO BEZ REZULTATA")
+                    setSearchMessage("No candidates with this search criteria. Please, try again.")
+                    isSearchEmpty(true);
+                    setCandidates([]);
+
+                })
+        }
     };
 
     useEffect(() => {
         getAllCandidates().then((data) => {
             setCandidates(data.data);
-        }).catch(() => {});
+        }).catch(() => { });
 
         getAllSkills().then((data) => {
             const options = data.data.map((option) => ({ value: option.name, label: option.name }));
             setSkillOptions(options);
         }).catch(() => { })
     }, [])
-
-
 
 
     return (
@@ -66,39 +89,47 @@ export const Homepage = () => {
             </Navbar>
             <p className="welcome">WELCOME TO HOMEPAGE</p>
 
-            <Form className="d-flex search"  onSubmit={searchCandidatesByName}>
+            <Form className="d-flex search" onSubmit={searchCandidatesByName}>
                 <Form.Control
                     type="search"
                     placeholder="Search by name and press enter"
                     className="me-2"
                     aria-label="Search"
                     value={searchName}
-                  onChange={(event) => setSearchName(event.target.value)}
-                
+                    onChange={(event) => setSearchName(event.target.value)}
+
                 />
                 <Select className="search-dropdown me-2"
                     placeholder={"Search by skills"}
                     options={skillOptions}
                     value={selectedOptions}
-                    onChange={handleSelectChange}
+                    onChange={(selectedOptions) => {
+                        setSelectedOptions(selectedOptions);
+                    }}
+                    onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                            event.preventDefault();
+                            handleSelectChange(selectedOptions);
+                        }
+                    }}
                     isMulti
                 />
                 <button className="search-button" > Search</button>
             </Form>
 
             <CardGroup className="cards">
-                {candidates.map((candidate) => {
+                {candidates && candidates.length > 0 ? candidates.map((candidate) => {
                     return (<CandidateProfile id={candidate.id}
                         fullName={candidate.fullName}
                         dateOfBirth={candidate.dateOfBirth}
                         email={candidate.email}
                         contactNumber={candidate.contactNumber}
                         skillList={candidate.skillList} skills1={candidate.skillList} />)
-                })}
-            </CardGroup> <div className="search-message"> 
-                 { isSearchEmpty ? <div><Card className="search-card">{searchMessage}</Card> </div> : null}
+                }) : <p> </p>}
+            </CardGroup> <div className="search-message">
+                {isSearchEmpty ? <div><Card className="search-card">{searchMessage}</Card> </div> : null}
             </div>
-           
+
         </div>
     )
 }

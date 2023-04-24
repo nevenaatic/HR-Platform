@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.SkillSearchDto;
 import com.example.demo.model.Candidate;
 import com.example.demo.model.Skill;
 import com.example.demo.service.CandidateService;
@@ -57,17 +58,18 @@ public class CandidateController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(candidates, HttpStatus.OK);
     }
-    @GetMapping("/candidate/skill/{skill}")
-    public ResponseEntity<List<Candidate>> findBySkill(@PathVariable String skill) {
-        List<Candidate> candidates = candidateService.findBySkillName(skill);
-        if(candidates.size() == 0)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(candidates, HttpStatus.OK);
-    }
 
-    @PostMapping("/candidate/skills/")
-    public ResponseEntity<List<Candidate>> findBySkills(@RequestBody List<String> skillList) {
-        List<Candidate> candidates = candidateService.findBySkillsName(skillList);
+//    @GetMapping("/candidate/skill/{skill}")
+//    public ResponseEntity<List<Candidate>> findBySkill(@PathVariable String skill) {
+//        List<Candidate> candidates = candidateService.findBySkillName(skill);
+//        if(candidates.size() == 0)
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        return new ResponseEntity<>(candidates, HttpStatus.OK);
+//    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<Candidate>> findBySkills(@RequestBody SkillSearchDto skillList) {
+        List<Candidate> candidates = candidateService.findBySkillsName(skillList.getSkillList());
         if(candidates.size() == 0)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(candidates, HttpStatus.OK);
@@ -79,12 +81,13 @@ public class CandidateController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
        return new ResponseEntity<>(candidateService.addSkillToCandidate(id,skillService.findOrCreateSkill(skillName) ), HttpStatus.OK) ;
     }
-    @PostMapping("/candidate/")
-    public ResponseEntity<List<Candidate>> searchCandidateByName(@RequestBody String name){
-        return new ResponseEntity<>(candidateService.findByName(name), HttpStatus.OK) ;
-    }
-    @PostMapping("/candidate/skills")
-    public ResponseEntity<List<Candidate>> searchCandidateBySkill(@RequestBody List<String> skillList){
-        return new ResponseEntity<>(candidateService.findBySkillsName(skillList), HttpStatus.OK) ;
-    }
+
+//    @PostMapping("/candidate/")
+//    public ResponseEntity<List<Candidate>> searchCandidateByName(@RequestBody String name){
+//        return new ResponseEntity<>(candidateService.findByName(name), HttpStatus.OK) ;
+//    }
+//    @PostMapping("/candidate/skills")
+//    public ResponseEntity<List<Candidate>> searchCandidateBySkill(@RequestBody List<String> skillList){
+//        return new ResponseEntity<>(candidateService.findBySkillsName(skillList), HttpStatus.OK) ;
+//    }
 }

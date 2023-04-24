@@ -20,7 +20,7 @@ public class Candidate {
     private long id;
     @Column(nullable = false)
     private String fullName;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Date dateOfBirth;
     @Column
     private String contactNumber;

@@ -8,13 +8,11 @@ import '../styles/Homepage.css'
 
 export const AddCandidateForm = ({ show, handleClose, skillOptions }) => {
     const [fullName, setFullName] = useState('');
-    const [dateOfBirth, setDateOfBirth] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState(undefined);
     const [email, setEmail] = useState('');
     const [contactNumber, setContactNumber] = useState('');
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [skillList, setSkillListForCandidate] = useState([]);
-
-
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -26,9 +24,7 @@ export const AddCandidateForm = ({ show, handleClose, skillOptions }) => {
             skillList
         };
         const skillsForCandidate = selectedOptions.map((option) => ({ id: 0, name: option.value }));
-        console.log(skillsForCandidate);
         newCandidate.skillList = skillsForCandidate;
-        console.log(newCandidate);
         createCandidate(newCandidate).then(data => {
             toast.success('You successfully create candidate! ', { position: toast.POSITION.BOTTOM_CENTER })
             handleClose()
@@ -37,35 +33,23 @@ export const AddCandidateForm = ({ show, handleClose, skillOptions }) => {
         })
     }
 
-    // const handleSelectChange = (newValue, actionMeta) => {
-    //     setSelectedOptions(newValue);
-    //     console.log(newValue);
-    //     console.log("U HANDLE SELECTION")
-    //     console.log(selectedOptions)
-    //   };
-
     const handleCreateOption = (inputValue) => {
         const newOption = {
             value: inputValue,
             label: inputValue,
         };
-        console.log("U CREATE OPTION")
         setSelectedOptions([...selectedOptions, newOption]);
         setSkillListForCandidate(prevState => [...prevState, newOption]);
-        console.log(selectedOptions)
-        console.log(skillList)
-
     };
-
 
     return (
         <div>
             <Modal show={show} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Add New Candidate</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Add New Candidate</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
                         <Form.Group controlId="fullName">
                             <Form.Label>Full Name</Form.Label>
                             <Form.Control type="text" placeholder="Enter full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
@@ -93,15 +77,11 @@ export const AddCandidateForm = ({ show, handleClose, skillOptions }) => {
                                 }}
                                 onCreateOption={handleCreateOption} />
                         </Form.Group>
-
- <button type="submit" className="submit-button">Submit</button>
-
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                   
-                    <Button variant="secondary" onClick={handleClose}>Close</Button>
-                </Modal.Footer>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button type="submit" className="submit-button">Submit</button>
+                        <Button variant="secondary" onClick={handleClose}>Close</Button>
+                    </Modal.Footer> </Form>
             </Modal>
             <ToastContainer></ToastContainer>
         </div>

@@ -1,9 +1,9 @@
 import { Modal, Button, Form } from "react-bootstrap";
 import React, { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
 import CreatableSelect from 'react-select/creatable';
 import { updateCandidate } from "../api/CandidateApi";
-import { ToastContainer, toast } from "react-toastify";
 import '../styles/Homepage.css'
 import { useEffect } from "react";
 import { getAllSkills } from "../api/SkillApi";
@@ -13,7 +13,7 @@ export const UpdateCandidateForm = ({ show, candidate, id, handleClose, candidat
     const [dateOfBirth, setDateOfBirth] = useState(candidate.dateOfBirth);
     const [email, setEmail] = useState(candidate.email);
     const [contactNumber, setContactNumber] = useState(candidate.contactNumber);
-    const [availableSkills, setAvailableSkills ] = useState([])
+    const [availableSkills, setAvailableSkills] = useState([])
     const [selectedOptions, setSelectedOptions] = useState(candidateSkillOptions);
     const [skillList, setSkillListForCandidate] = useState([]);
 
@@ -29,26 +29,24 @@ export const UpdateCandidateForm = ({ show, candidate, id, handleClose, candidat
     const handleSubmit = (event) => {
         event.preventDefault();
         const skillsForCandidate = selectedOptions.map((option) => ({ id: 0, name: option.value }));
-    
-    const updatedCandidate = {
-        id,
-        fullName,
-        dateOfBirth,
-        email,
-        contactNumber,
-        skillList
-    }
-    updateCandidate.id = idCandidate;
-    updatedCandidate.skillList = skillsForCandidate;
+
+        const updatedCandidate = {
+            id,
+            fullName,
+            dateOfBirth,
+            email,
+            contactNumber,
+            skillList
+        }
+        updateCandidate.id = idCandidate;
+        updatedCandidate.skillList = skillsForCandidate;
         updateCandidate(updatedCandidate, idCandidate)
             .then(data => {
-                console.log("UPDATED ")
                 toast.success('You successfully updated candidate!', { position: toast.POSITION.BOTTOM_CENTER });
                 onUpdateNew(data.data)
+                handleClose()
             });
-           
     };
-
 
     const handleCreateOption = (inputValue) => {
         const newOption = {
@@ -58,19 +56,16 @@ export const UpdateCandidateForm = ({ show, candidate, id, handleClose, candidat
         console.log("U CREATE OPTION")
         setSelectedOptions([...selectedOptions, newOption]);
         setSkillListForCandidate(prevState => [...prevState, newOption]);
-        console.log(selectedOptions)
-        console.log(skillList)
     };
 
     return (
         <div>
             <Modal show={show} centered>
-                 <Form onSubmit={handleSubmit}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Add New Candidate</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                   
+                <Form onSubmit={handleSubmit}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Update candidate</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
                         <Form.Group controlId="fullName">
                             <Form.Label>Full Name</Form.Label>
                             <Form.Control type="text" placeholder="Enter full name" value={fullName} onChange={(event) => setFullName(event.target.value)} />
@@ -98,12 +93,11 @@ export const UpdateCandidateForm = ({ show, candidate, id, handleClose, candidat
                                 }}
                                 onCreateOption={handleCreateOption} />
                         </Form.Group>
-                   
-                </Modal.Body>
-                <Modal.Footer>
-                    <button type="submit" className="submit-button">Submit</button>
-                    <Button variant="secondary" onClick={handleClose}>Close</Button>
-                </Modal.Footer> </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button type="submit" className="submit-button">Submit</button>
+                        <Button variant="secondary" onClick={handleClose}>Close</Button>
+                    </Modal.Footer> </Form>
             </Modal>
             <ToastContainer></ToastContainer>
         </div>

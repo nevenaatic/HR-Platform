@@ -1,26 +1,31 @@
 import { UpdateCandidateForm } from "./UpdateCandidate";
 import Card from "react-bootstrap/Card";
-import Button from 'react-bootstrap/Button';
+import 'font-awesome/css/font-awesome.min.css';
 import '../styles/Homepage.css';
 import { useState } from "react";
 import moment from "moment/moment";
 import { useEffect } from "react";
+import { DeleteCandidate } from "./DeleteCandidate";
 
 
-export const CandidateProfile = (candidate, onUpdate) => {
+export const CandidateProfile = ({candidate, onUpdate}) => {
   const [updateUserModal, setUpdateUserModal] = useState(false);
   const [skillOptions, setSkillOptions] = useState([]);
   const [candidateId, setCandidateId] = useState(candidate.id)
-
+  const [deleteUserModal, setDeleteModal] = useState(false)
 
   const handleOpenModal = () =>{
     setUpdateUserModal(true);
   }
 
+  const handleOpenDeleteModal = () =>{
+    setDeleteModal(true);
+  }
+
   function handleCloseModal() {
-    console.log(":ZATVARAM SE")
     onUpdate(null)
     setUpdateUserModal(false);
+    setDeleteModal(false);
 }
 
 useEffect(() =>{
@@ -49,7 +54,9 @@ useEffect(() =>{
           }
 
         </div>
-        <Button variant="primary" onClick={handleOpenModal}>Edit</Button> <Button variant="primary">Delete</Button>
+        <hr/>
+        <buttton className="submit-button" onClick={handleOpenModal}><i class="fa fa-user-pen"> </i>Edit </buttton> 
+        <button className="delete-button" onClick={handleOpenDeleteModal}><i class="fa fa-trash" > </i>Delete</button>
       </Card.Body>
     </Card>
     { updateUserModal ? <UpdateCandidateForm 
@@ -59,6 +66,13 @@ useEffect(() =>{
                 handleClose = {handleCloseModal}
                 candidateSkillOptions = {skillOptions}
                 onUpdateNew={onUpdate}
+                /> : ""}
+
+{ deleteUserModal ? <DeleteCandidate 
+                show={deleteUserModal}
+                candidate = {candidate}
+                id= {candidateId}
+                handleClose = {handleCloseModal}
                 /> : ""}
     </div>
   );

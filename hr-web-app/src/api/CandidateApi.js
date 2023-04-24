@@ -28,3 +28,8 @@ export async function updateCandidate(candidate, id) {
     return await axios.post(`http://localhost:8081/candidates/${id}`, candidate);
 
 }
+
+export async function deleteCandidate(id){
+    return await axios.delete(`http://localhost:8081/candidates/${id}`);
+
+}

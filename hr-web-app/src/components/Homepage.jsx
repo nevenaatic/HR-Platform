@@ -10,7 +10,8 @@ import React, { useEffect, useState } from 'react';
 import { findByName, findBySkillsName, getAllCandidates } from "../api/CandidateApi";
 import { getAllSkills } from "../api/SkillApi";
 import { AddCandidateForm } from "./AddCandidate";
-import { UpdateCandidateForm } from "./UpdateCandidate";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
 
 export const Homepage = () => {
 
@@ -22,16 +23,9 @@ export const Homepage = () => {
     const [isSearchEmpty, setIsSearchEmpty] = useState(false);
     const [createUserModal, setCreateUserModal] = useState(false);
 
-    const [updateCandidateFLEG, setFleg] = useState(false)
-    const handleShowModal = () => {
-        setCreateUserModal(true);
-    }
-
-
     function searchCandidatesByName(event) {
         event.preventDefault();
         if (searchName === '') {
-            console.log(searchName)
             getAllCandidates().then((data) => {
                 setCandidates(data.data);
                 setIsSearchEmpty(false);
@@ -43,32 +37,24 @@ export const Homepage = () => {
                     setSearchMessage("No candidates with this search criteria. Please, try again.")
                     setCandidates([])
                     setIsSearchEmpty(true);
-                    console.log(searchMessage)
                 })
         }
-
     }
 
     function handleSelectChange(selectedOptions) {
         if (selectedOptions.length === 0) {
-            console.log("ALO BRE")
             getAllCandidates().then((data) => {
                 setCandidates(data.data);
                 isSearchEmpty(false);
             }).catch(() => { });
         } else {
-            console.log(selectedOptions)
             const values = selectedOptions.map(option => option.value);
-            console.log("IZABRANE VESTINE U HANDLE SELECTION")
-            console.log(values);
             findBySkillsName(values)
                 .then(data => {
                     setCandidates(data.data);
-                    console.log("VRACENI OK REZULTATI")
                     setIsSearchEmpty(false)
                 })
                 .catch(() => {
-                    console.log("VRACENO BEZ REZULTATA")
                     setSearchMessage("No candidates with this search criteria. Please, try again.")
                     isSearchEmpty(true);
                     setCandidates([]);
@@ -96,7 +82,7 @@ export const Homepage = () => {
         getAllCandidates().then((data) => {
             setCandidates(data.data);
         }).catch(() => { });
-        
+
         getAllSkills().then((data) => {
             const options = data.data.map((option) => ({ value: option.name, label: option.name }));
             setSkillOptions(options);
@@ -104,27 +90,13 @@ export const Homepage = () => {
     }
 
     function handleCandidateUpdate(updatedCandidate) {
-        setFleg(true);
-        console.log("EVO ME U HOMEPAGE UPDATE ")
-        // const updatedCandidates = candidates.map(candidate => {
-        //   if (candidate.id === updatedCandidate.id) {
-        //     return updatedCandidate;
-        //   } else {
-        //     return candidate;
-        //   }
-        // });
-        console.log(candidates)
-        console.log("*******************************8")
-        // setCandidates(updatedCandidates);
+        toast.success('You successfully updated candidate!', { position: toast.POSITION.BOTTOM_CENTER });
         getAllCandidates().then((data) => {
             setCandidates(data.data);
-        }).catch(() => { });
-      }
-useEffect(()=> {
-    getAllCandidates().then((data) => {
-        setCandidates(data.data);
-    }).catch(() => { });
-}, [updateCandidateFLEG])
+        });
+
+    }
+
     return (
         <div className="homepage-container">
             <Navbar bg="lg" expand="lg" fixed="top" className="navbar-style" >
@@ -158,30 +130,23 @@ useEffect(()=> {
                     isMulti
                 />
                 <button className="search-button"> Search</button>
-                <button className="add-button" onClick={handleOpenModal}> <i class="fa fa-user-plus"></i> </button>
+                <button className="add-button" onClick={handleOpenModal}> <i className="fa fa-user-plus"></i> </button>
             </Form>
-            
-            { createUserModal ? <AddCandidateForm 
+
+            {createUserModal ? <AddCandidateForm
                 show={createUserModal}
-                handleClose = {handleCloseModal}
-                skillOptions = {skillOptions}
-                /> : ""}
-            
+                handleClose={handleCloseModal}
+                skillOptions={skillOptions}
+            /> : ""}
             <CardGroup className="cards">
-                {candidates && candidates.length > 0 ? candidates.map((candidate) => {
-                    return (<CandidateProfile id={candidate.id}
-                        fullName={candidate.fullName}
-                        dateOfBirth={candidate.dateOfBirth}
-                        email={candidate.email}
-                        contactNumber={candidate.contactNumber}
-                        skillList={candidate.skillList} 
+                {candidates && candidates.length > 0 ? candidates.map((c) => {
+                    return (<CandidateProfile candidate={c}
                         onUpdate={handleCandidateUpdate}
-                        />)
+                    />)
                 }) : <p> </p>}
             </CardGroup> <div className="search-message">
                 {isSearchEmpty ? <div><Card className="search-card">{searchMessage}</Card> </div> : null}
             </div>
-
         </div>
     )
 }

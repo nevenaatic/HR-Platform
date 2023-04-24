@@ -33,9 +33,12 @@ INSERT INTO skill (name) VALUES ('Team work');
 -- Inserting data into candidate table
 INSERT INTO candidate (full_name, date_of_birth, contact_number, email)
 VALUES ('Nina Pavlovic', '1995-06-04', '062541251', 'nincep@gmail.com');
-
 INSERT INTO candidate (full_name, date_of_birth, contact_number, email)
 VALUES ('Marko Kovacevic', '1984-06-24', '0265452221', 'mare@gmail.com');
+INSERT INTO candidate (full_name, date_of_birth, contact_number, email)
+VALUES ('Mara Maric', '1974-06-24', '069888888', 'maram@gmail.com');
+INSERT INTO candidate (full_name, date_of_birth, contact_number, email)
+VALUES ('Pera Peric', '1999-11-04', '06355555', 'pericp@gmail.com');
 
 -- Inserting data into candidate_skill table
 INSERT INTO candidate_skill (candidate_id, skill_id) VALUES (1, 1);
@@ -43,3 +46,9 @@ INSERT INTO candidate_skill (candidate_id, skill_id) VALUES (1, 4);
 INSERT INTO candidate_skill (candidate_id, skill_id) VALUES (1, 5);
 INSERT INTO candidate_skill (candidate_id, skill_id) VALUES (2, 2);
 INSERT INTO candidate_skill (candidate_id, skill_id) VALUES (2, 3);
+INSERT INTO candidate_skill (candidate_id, skill_id) VALUES (3, 4);
+INSERT INTO candidate_skill (candidate_id, skill_id) VALUES (3, 3);
+INSERT INTO candidate_skill (candidate_id, skill_id) VALUES (4, 1);
+INSERT INTO candidate_skill (candidate_id, skill_id) VALUES (4, 3);
+
+

@@ -51,7 +51,7 @@
 
 .search {
     width: 70%;
-    margin-left: 10%;
+    margin-left: 15%;
 }
 
 .search-button {
@@ -63,9 +63,26 @@
     color: white;
     font-weight: bold;
     font-size: large;
+    display: none;
 }
 
 .search-dropdown {
     width: 100%;
     font-size: medium;
 }
+
+.search-message {
+    text-align: center;
+    margin-top: 5%;
+    margin-left: 10%;
+    margin-right:15%;
+    
+}
+/* 
+.search-card {
+    padding-left: 1%;
+    padding-right: 1%;
+    text-align: center;
+    width: max-content;
+    
+} */

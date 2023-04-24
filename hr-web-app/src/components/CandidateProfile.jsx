@@ -25,7 +25,7 @@ export const CandidateProfile = (candidate, skills1) => {
         <Card.Title>{candidate.fullName}</Card.Title>
         <Card.Text style={{ fontSize: 16 }}>
           <p>Email: {candidate.fullName}</p>
-          <p>Number: {candidate.phoneNumber}</p>
+          <p>Number: {candidate.contactNumber}</p>
           <p>Birthday: {candidate.dateOfBirth ? moment(candidate.dateOfBirth).format('DD-MM-YYYY') : "/"}</p>
         </Card.Text>
         <div>

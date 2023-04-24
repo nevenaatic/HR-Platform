@@ -1,14 +1,14 @@
-.homepage-container{
-    background-color: rgba(128,128,128, 0.7);
-    border:  2px solid gray;
+.homepage-container {
+    background-color: rgba(128, 128, 128, 0.7);
+    border: 2px solid gray;
     padding: 12px;
     border-radius: 10px;
-    height:90%;
+    height: 90%;
     width: 90%;
 }
 
-.logout-button{
-    border:  2px solid gray;
+.logout-button {
+    border: 2px solid gray;
     padding: 12px;
     border-radius: 10px;
     cursor: pointer;
@@ -18,28 +18,29 @@
     font-size: large;
 }
 
-.navbar-style{
- text-align: right;
-margin-left: 92%;
+.navbar-style {
+    text-align: right;
+    margin-left: 92%;
 }
 
-.skill-label{
-    border:  2px solid gray;
-    padding: 2px;
+.skill-label {
+    border: 2px solid gray;
+    padding: 1.6px;
     border-radius: 10px;
     background-color: gray;
     color: white;
-    font-size: large;
-    margin-left: 3%;
+    font-size: medium;
+    margin-left: 2%;
 }
 
-.card-style{
+.card-style {
     margin-top: 2%;
-   padding-right: 1%;
+    padding-right: 1%;
     margin-bottom: 2%;
 }
-.cards{
-    margin-left: 5%;
+
+.cards {
+    margin-left: 7%;
 }
 
 .welcome {
@@ -47,13 +48,15 @@ margin-left: 92%;
     color: white;
     font-weight: bold;
 }
-.search{
+
+.search {
     width: 70%;
     margin-left: 10%;
 }
-.search-button{
-    border:  2px solid gray;
-    padding: 7px ;
+
+.search-button {
+    border: 2px solid gray;
+    padding: 7px;
     border-radius: 8px;
     cursor: pointer;
     background-color: rgb(27, 49, 116);
@@ -62,7 +65,7 @@ margin-left: 92%;
     font-size: large;
 }
 
-.search-dropdown{
+.search-dropdown {
     width: 100%;
     font-size: medium;
 }

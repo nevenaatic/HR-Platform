@@ -6,12 +6,13 @@ import { CandidateProfile } from "./CandidateProfile";
 import { CardGroup } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
 import Select from 'react-select';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getAllCandidates } from "../api/CandidateApi";
 
 export const Homepage = () => {
 
     const [selectedOptions, setSelectedOptions] = useState([]);
-
+    const [candidates, setCandidates] = useState([]);
     //   const options = [
     //     { value: 'apple', label: 'Apple' },
     //     { value: 'banana', label: 'Banana' },
@@ -32,6 +33,15 @@ export const Homepage = () => {
         const values = selectedOptions.map(option => option.value);
         console.log(values);
     };
+
+    useEffect(() => {
+        getAllCandidates().then((data) => {
+          setCandidates(data.data);
+          console.log(data.data)
+        })
+        .catch(() => {
+        });
+      },[])
 
     return (
         <div className="homepage-container">
@@ -63,12 +73,16 @@ export const Homepage = () => {
                 <button className="search-button" >Search</button>
             </Form>
 
-            <CardGroup className="cards">
-                <CandidateProfile></CandidateProfile>
-                <CandidateProfile></CandidateProfile>
-                <CandidateProfile></CandidateProfile> <CandidateProfile></CandidateProfile>
-                <CandidateProfile></CandidateProfile>
-                <CandidateProfile></CandidateProfile> </CardGroup>
+            <CardGroup className="cards"> 
+            {candidates.map((candidate) => {
+                return ( <CandidateProfile  id={candidate.id}
+                fullName={candidate.fullName}
+                dateOfBirth= {candidate.dateOfBirth}
+                email={candidate.email}
+                phoneNumber={candidate.phoneNumber}
+                skillList={candidate.skillList} skills1 ={candidate.skillList}/>)
+            })}
+             </CardGroup>
         </div>
     )
 }

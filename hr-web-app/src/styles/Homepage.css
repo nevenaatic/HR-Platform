@@ -48,7 +48,17 @@
     color: white;
     font-weight: bold;
 }
-
+.add-button {
+    border: 2px solid gray;
+    padding: 7px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: rgb(27, 49, 116);
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    width: max-content;
+}
 .search {
     width: 70%;
     margin-left: 15%;
@@ -86,3 +96,17 @@
     width: max-content;
     
 } */
+
+.submit-button {
+    border: 2px solid gray;
+    padding: 7px;
+    border-radius:  8px;
+    cursor: pointer;
+    background-color: rgb(27, 49, 116);
+    color: white;
+    font-weight: bold;
+    font-size: medium;
+    width: max-content;
+    /* margin-top: 1%;
+    margin-left: 85%; */
+}

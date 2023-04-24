@@ -9,6 +9,8 @@ import Select from 'react-select';
 import React, { useEffect, useState } from 'react';
 import { findByName, findBySkillsName, getAllCandidates } from "../api/CandidateApi";
 import { getAllSkills } from "../api/SkillApi";
+import { AddCandidateForm } from "./AddCandidate";
+import { UpdateCandidateForm } from "./UpdateCandidate";
 
 export const Homepage = () => {
 
@@ -18,6 +20,13 @@ export const Homepage = () => {
     const [searchName, setSearchName] = useState("");
     const [searchMessage, setSearchMessage] = useState("");
     const [isSearchEmpty, setIsSearchEmpty] = useState(false);
+    const [createUserModal, setCreateUserModal] = useState(false);
+
+    const [updateCandidateFLEG, setFleg] = useState(false)
+    const handleShowModal = () => {
+        setCreateUserModal(true);
+    }
+
 
     function searchCandidatesByName(event) {
         event.preventDefault();
@@ -41,8 +50,6 @@ export const Homepage = () => {
     }
 
     function handleSelectChange(selectedOptions) {
-
-
         if (selectedOptions.length === 0) {
             console.log("ALO BRE")
             getAllCandidates().then((data) => {
@@ -59,13 +66,12 @@ export const Homepage = () => {
                     setCandidates(data.data);
                     console.log("VRACENI OK REZULTATI")
                     setIsSearchEmpty(false)
-                }
-                ).catch(() => {
+                })
+                .catch(() => {
                     console.log("VRACENO BEZ REZULTATA")
                     setSearchMessage("No candidates with this search criteria. Please, try again.")
                     isSearchEmpty(true);
                     setCandidates([]);
-
                 })
         }
     };
@@ -82,6 +88,43 @@ export const Homepage = () => {
     }, [])
 
 
+    function handleOpenModal() {
+        setCreateUserModal(true);
+    }
+    function handleCloseModal() {
+        setCreateUserModal(false);
+        getAllCandidates().then((data) => {
+            setCandidates(data.data);
+        }).catch(() => { });
+        
+        getAllSkills().then((data) => {
+            const options = data.data.map((option) => ({ value: option.name, label: option.name }));
+            setSkillOptions(options);
+        }).catch(() => { })
+    }
+
+    function handleCandidateUpdate(updatedCandidate) {
+        setFleg(true);
+        console.log("EVO ME U HOMEPAGE UPDATE ")
+        // const updatedCandidates = candidates.map(candidate => {
+        //   if (candidate.id === updatedCandidate.id) {
+        //     return updatedCandidate;
+        //   } else {
+        //     return candidate;
+        //   }
+        // });
+        console.log(candidates)
+        console.log("*******************************8")
+        // setCandidates(updatedCandidates);
+        getAllCandidates().then((data) => {
+            setCandidates(data.data);
+        }).catch(() => { });
+      }
+useEffect(()=> {
+    getAllCandidates().then((data) => {
+        setCandidates(data.data);
+    }).catch(() => { });
+}, [updateCandidateFLEG])
     return (
         <div className="homepage-container">
             <Navbar bg="lg" expand="lg" fixed="top" className="navbar-style" >
@@ -114,9 +157,16 @@ export const Homepage = () => {
                     }}
                     isMulti
                 />
-                <button className="search-button" > Search</button>
+                <button className="search-button"> Search</button>
+                <button className="add-button" onClick={handleOpenModal}> <i class="fa fa-user-plus"></i> </button>
             </Form>
-
+            
+            { createUserModal ? <AddCandidateForm 
+                show={createUserModal}
+                handleClose = {handleCloseModal}
+                skillOptions = {skillOptions}
+                /> : ""}
+            
             <CardGroup className="cards">
                 {candidates && candidates.length > 0 ? candidates.map((candidate) => {
                     return (<CandidateProfile id={candidate.id}
@@ -124,7 +174,9 @@ export const Homepage = () => {
                         dateOfBirth={candidate.dateOfBirth}
                         email={candidate.email}
                         contactNumber={candidate.contactNumber}
-                        skillList={candidate.skillList} skills1={candidate.skillList} />)
+                        skillList={candidate.skillList} 
+                        onUpdate={handleCandidateUpdate}
+                        />)
                 }) : <p> </p>}
             </CardGroup> <div className="search-message">
                 {isSearchEmpty ? <div><Card className="search-card">{searchMessage}</Card> </div> : null}

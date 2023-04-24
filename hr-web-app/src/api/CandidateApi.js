@@ -18,3 +18,13 @@ export async function findBySkillsName(skils){
     };
     return await axios.post('http://localhost:8081/candidates/search', {"skillList" : skils}, config);
 }
+
+export async function createCandidate(candidate){
+    
+    return await axios.post('http://localhost:8081/candidates/', candidate);
+}
+
+export async function updateCandidate(candidate, id) {
+    return await axios.post(`http://localhost:8081/candidates/${id}`, candidate);
+
+}

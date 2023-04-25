@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CandidateSkillControllerTests {
-    private MockMvc mockMvc;
+
 
     @Mock
     private CandidateService candidateService;
@@ -42,13 +42,12 @@ public class CandidateSkillControllerTests {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(candidateSkillController).build();
     }
 
     @Test
     public void testAddSkillToCandidate() {
         long id = 1L;
-        String skillName = "skillName";
+        String skillName = "ime";
         Candidate candidate = new Candidate(1L, "Kandidat 1", null, "1111", "k1@mejl", new HashSet<>());
         Skill skill = new Skill();
         skill.setName(skillName);
@@ -75,7 +74,7 @@ public class CandidateSkillControllerTests {
     @Test
     public void testFindBySkills() {
         SkillSearchDto skillList = new SkillSearchDto();
-        skillList.setSkillList(Arrays.asList("skill1", "skill2"));
+        skillList.setSkillList(Arrays.asList("prva", "druga"));
         List<Candidate> candidates = new ArrayList<>();
         candidates.add(new Candidate());
         when(candidateService.findBySkillsName(skillList.getSkillList())).thenReturn(candidates);

@@ -1,87 +1,131 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Candidate;
-import com.example.demo.model.Skill;
-import com.example.demo.repository.CandidateRepository;
-import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.CandidateService;
-import com.example.demo.service.CandidateServiceImpl;
-import com.example.demo.service.SkillService;
-import com.example.demo.service.SkillServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.xml.crypto.Data;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 public class CandidateControllerTests {
-    @Autowired
-    private MockMvc mvc;
+    @Mock
+    private CandidateService candidateService;
 
     @InjectMocks
-    private CandidateServiceImpl candidateService;
-
-    @Mock
-    private CandidateRepository candidateRepository;
+    private CandidateController candidateController;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        CandidateController candidateController = new CandidateController(candidateService);
-        mvc = MockMvcBuilders.standaloneSetup(candidateController).build();
+    }
+    @Test
+    public void getAllCandidates() {
+        List<Candidate> candidates = new ArrayList<>();
+        candidates.add(new Candidate(1L, "Mara MAric", null, "11111", "mara@gmail.com",  new HashSet<>()));
+        candidates.add(new Candidate(2L, "Mira Miric",null, "11111", "mirkaa@gmail.com",  new HashSet<>()));
+
+        when(candidateService.findAll()).thenReturn(candidates);
+
+        ResponseEntity<List<Candidate>> response = candidateController.getAllCandidates();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(candidates, response.getBody());
+    }
+
+
+    @Test
+    public void getById() {
+        long id = 1L;
+        Candidate candidate = new Candidate(1L, "Mara MAric", null, "11111", "mara@gmail.com",  new HashSet<>());
+
+        when(candidateService.findById(id)).thenReturn(candidate);
+
+        ResponseEntity<Candidate> response = candidateController.getById(id);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(candidate, response.getBody());
     }
 
     @Test
-    public void testGetAllCandidates() throws Exception {
-        Candidate c1 = new Candidate(1L, "Kandidat 1", null, "1111", "k1@mejl", new HashSet<>());
-        Candidate c2 = new Candidate(2L, "Kandidat 2", null, "1111", "k2@mejl", new HashSet<>());
-        List<Candidate> expectedCandidates = Arrays.asList(c1, c2);
-        when(candidateRepository.findAll()).thenReturn(expectedCandidates);
+    public void getByIdNotFound() {
+        long id = 1L;
 
-        mvc.perform(MockMvcRequestBuilders.get("/candidates"))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json("[{'id':1, 'fullName': 'Kandidat 1', 'dateOfBirth':null, 'email':'k1@mejl', 'skillList':[]}, {'id':2, 'fullName': 'Kandidat 2', 'dateOfBirth':null, 'email':'k2@mejl', 'skillList':[]}]"));
+        when(candidateService.findById(id)).thenReturn(null);
 
+        ResponseEntity<Candidate> response = candidateController.getById(id);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
     }
 
     @Test
-    public void testCreateCandidate() throws Exception {
-        Candidate c1 = new Candidate(1L, "Kandidat 1", null, "1111", "k1@mejl", new HashSet<>());
-        ObjectMapper mapper = new ObjectMapper();
-        String candidateJson = mapper.writeValueAsString(c1);
+    public void updateCandidate() {
+        long id = 1L;
+        Candidate candidate = new Candidate(1L, "Mara MAric", null, "11111", "mara@gmail.com",  new HashSet<>());
 
-        when(candidateService.save(c1)).thenReturn(c1);
+        when(candidateService.findById(id)).thenReturn(candidate);
+        when(candidateService.updateCandidate(candidate)).thenReturn(candidate);
 
-        mvc.perform(MockMvcRequestBuilders.post("/candidates/")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(candidateJson))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
-                //.andExpect(MockMvcResultMatchers.content().json("{'id':1, 'fullName': 'Kandidat 1', 'dateOfBirth':null, 'email':'k1@mejl', 'skillList':[]}"));
+        ResponseEntity<Candidate> response = candidateController.updateCandidate(id, candidate);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(candidate, response.getBody());
+    }
+
+    @Test
+    public void updateCandidateNotFound() {
+        long id = 1L;
+        Candidate candidate = new Candidate(1L, "Mara MAric", null, "11111", "mara@gmail.com",  new HashSet<>());
+
+        when(candidateService.findById(id)).thenReturn(null);
+
+        ResponseEntity<Candidate> response = candidateController.updateCandidate(id, candidate);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+    }
+
+    @Test
+    public void testFindByName() {
+        Candidate candidate1 = new Candidate(1l, "Ana Anic", null, "11111", "aaaa", new HashSet<>());
+        Candidate candidate2 = new Candidate(1l, "Ana Minic", null, "11111", "aaaa2", new HashSet<>());
+         List<Candidate> candidates = new ArrayList<>();
+        candidates.add(candidate1);
+         candidates.add(candidate2);
+
+        when(candidateService.findByName("ana")).thenReturn(candidates);
+        ResponseEntity<List<Candidate>> response = candidateController.findByName("ana");
+
+        assertEquals(2, response.getBody().size());
+        assertTrue(response.getBody().contains(candidate1));
+        assertTrue(response.getBody().contains(candidate2));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testFindByNameWithNoMatch() {
+        String name = "Joca";
+        when(candidateService.findByName(name)).thenReturn(Collections.emptyList());
+
+        ResponseEntity<List<Candidate>> response = candidateController.findByName(name);
+
+        verify(candidateService).findByName(name);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
     }
 }

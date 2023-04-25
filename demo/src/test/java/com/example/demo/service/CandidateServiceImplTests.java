@@ -37,14 +37,12 @@ public class CandidateServiceImplTests {
 
     @Test
    public void save() {
-        //given
         Candidate candidate = new Candidate(0L, "Pera Peric", new Date(),
                 "1234567890", "pera@gmail.com", new HashSet<>());
 
         when(candidateRepository.findByEmail(any())).thenReturn(null);
         when(candidateRepository.save(any())).thenReturn(candidate);
 
-        //when
         Candidate savedCandidate = candidateService.save(candidate);
 
         Assertions.assertNotNull(savedCandidate);

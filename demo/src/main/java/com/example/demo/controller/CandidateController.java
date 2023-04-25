@@ -57,19 +57,4 @@ public class CandidateController {
         return new ResponseEntity<>(candidates, HttpStatus.OK);
     }
 
-//    @PostMapping("/search")
-//    public ResponseEntity<List<Candidate>> findBySkills(@RequestBody SkillSearchDto skillList) {
-//        List<Candidate> candidates = candidateService.findBySkillsName(skillList.getSkillList());
-//        if(candidates.size() == 0)
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        return new ResponseEntity<>(candidates, HttpStatus.OK);
-//    }
-
-//    @PostMapping("/{id}/skill")
-//    public ResponseEntity<Candidate> addSkillToCandidate(@PathVariable long id, @RequestBody String skillName){
-//        if(candidateService.findById(id)==null)
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//       return new ResponseEntity<>(candidateService.addSkillToCandidate(id,skillService.findOrCreateSkill(skillName) ), HttpStatus.OK) ;
-//    }
-
 }

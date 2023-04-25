@@ -4,15 +4,19 @@ import com.example.demo.model.Skill;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
 import com.example.demo.service.SkillServiceImpl;
+
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -22,22 +26,18 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SkillControllerTests {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @Mock
+    private SkillService skillService;
 
     @InjectMocks
-    private SkillServiceImpl skillService;
-
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        SkillController skillController = new SkillController(skillService);
-        mockMvc = MockMvcBuilders.standaloneSetup(skillController).build();
-    }
+    private SkillController skillController;
 
     @Test
     public void testGetAllSkills() throws Exception {
@@ -45,17 +45,35 @@ public class SkillControllerTests {
         Skill skill2 = new Skill(2L, "Python", new HashSet<>());
         List<Skill> skills = Arrays.asList(skill1, skill2);
         when(skillService.getAll()).thenReturn(skills);
-        mockMvc.perform(MockMvcRequestBuilders.get("/skills"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json("[{'id': 1, 'name': 'Java'},{'id': 2, 'name': 'Python'}]"));
+        ResponseEntity<List<Skill>> response = skillController.getAllSkills();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(skills, response.getBody());
+    }
+    @Test
+    public void testGetById() {
+        Skill skill1 = new Skill(1L, "Java", new HashSet<>());
+        when(skillService.findById(1)).thenReturn(skill1);
+
+        ResponseEntity<Skill> response = skillController.getById(1);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(skill1, response.getBody());
+    }
+    @Test
+    public void testGetByIdNotFound() {
+        when(skillService.findById(1)).thenReturn(null);
+
+        ResponseEntity<Skill> response = skillController.getById(1);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
     }
 
     @Test
-    public void testAddSkillBadRequest() throws Exception {
-        when(skillService.findByName("Java")).thenReturn(new Skill(1L, "Java", new HashSet<>()));
-        mockMvc.perform(MockMvcRequestBuilders.post("/skills")
-                        .content("{\"name\": \"Java\"}")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    public void testAddSkillAlreadyExists() {
+        Skill existingSkill = new Skill(1, "Java", null);
+        when(skillService.findByName("Java")).thenReturn(existingSkill);
+
+        ResponseEntity<Skill> response = skillController.addSkill(existingSkill);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNull(response.getBody());
     }
 }

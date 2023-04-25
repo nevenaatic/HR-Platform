@@ -16,7 +16,7 @@ public interface CandidateService {
     List<Candidate> findBySkillsName(List<String> skills);
     List<Candidate> findByName(String name);
     Candidate findByEmail(String email);
-    void deleteSkill(long candidateId, Skill skill);
+    Candidate deleteSkillForCandidate(long candidateId, Skill skill);
     Candidate addSkillToCandidate(long candidateId, Skill skill);
     Candidate updateCandidate(Candidate candidate);
 

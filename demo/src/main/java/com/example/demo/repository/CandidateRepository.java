@@ -22,5 +22,4 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
     Candidate findById(long id);
     @Query("select c from Candidate c join c.skillList s WHERE c.id = ?1")
     Candidate findWithSkills(long id);
-
 }

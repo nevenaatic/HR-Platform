@@ -28,7 +28,7 @@ public class SkillServiceImpl implements SkillService{
 
     @Override
     public void deleteSkillForCandidate(long id, long candidateId) {
-        candidateService.deleteSkill(candidateId, findById(id));
+        candidateService.deleteSkillForCandidate(candidateId, findById(id));
     }
 
     @Override

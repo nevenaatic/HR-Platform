@@ -16,7 +16,7 @@ export async function findBySkillsName(skils){
             'Access-Control-Allow-Methods': 'POST',
         }
     };
-    return await axios.post('http://localhost:8081/candidates/search', {"skillList" : skils}, config);
+    return await axios.post('http://localhost:8081/candidate-skill/search', {"skillList" : skils}, config);
 }
 
 export async function createCandidate(candidate){
@@ -25,7 +25,7 @@ export async function createCandidate(candidate){
 }
 
 export async function updateCandidate(candidate, id) {
-    return await axios.post(`http://localhost:8081/candidates/${id}`, candidate);
+    return await axios.put(`http://localhost:8081/candidates/${id}`, candidate);
 
 }
 

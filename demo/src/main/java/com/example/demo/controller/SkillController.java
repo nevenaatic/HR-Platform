@@ -38,7 +38,7 @@ public class SkillController {
         Skill createdSkill = skillService.save(skill);
         return new ResponseEntity<>(createdSkill, HttpStatus.CREATED);
     }
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Skill> updateSkill(@PathVariable long id, @RequestBody Skill skill){
 
         if(skillService.findById(id) == null) {
@@ -46,17 +46,10 @@ public class SkillController {
         } else if(skillService.findByName(skill.getName()) != null){
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Skill createdSkill = skillService.updateSKill(skill);
-        return new ResponseEntity<>(createdSkill, HttpStatus.OK);
+        skill.setId(id);
+        return new ResponseEntity<>(skillService.updateSKill(skill), HttpStatus.OK);
     }
-    @DeleteMapping("/{id}/candidate/{candidateId}")
-    public ResponseEntity<HttpStatus> deleteSkillForCandidate(@PathVariable long id, @PathVariable long candidateId){
 
-        if(skillService.findById(id) == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-       skillService.deleteSkillForCandidate(id, candidateId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteSkill(@PathVariable long id){
 

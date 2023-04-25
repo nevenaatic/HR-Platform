@@ -78,12 +78,11 @@ public class CandidateServiceImpl implements CandidateService {
     public Candidate findByEmail(String email) {
         return candidateRepository.findByEmail(email);
     }
-
     @Override
-    public void deleteSkill(long candidateId, Skill skill) {
+    public Candidate deleteSkillForCandidate(long candidateId, Skill skill) {
         Candidate candidate= candidateRepository.findWithSkills(candidateId);
         candidate.getSkillList().remove(skill);
-        candidateRepository.save(candidate);
+       return candidateRepository.save(candidate);
     }
 
     public Candidate addSkillToCandidate(long candidateId, Skill skill) {

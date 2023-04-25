@@ -27,9 +27,6 @@ public class CandidateServiceImplTests {
     @Mock
     CandidateRepository candidateRepository;
 
-    @Mock
-    SkillRepository skillRepository;
-
     @InjectMocks
     CandidateServiceImpl candidateService;
 
